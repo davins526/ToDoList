@@ -1,4 +1,6 @@
-﻿namespace ToDoList.Domain.Entity
+﻿using ToDoList.Domain.Enum;
+
+namespace ToDoList.Domain.Entity
 {
     public class TaskEntity
     {
