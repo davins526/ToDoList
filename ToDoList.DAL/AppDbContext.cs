@@ -6,12 +6,12 @@ namespace ToDoList.DAL
 {
     public class AppDbContext : DbContext
     {
-        public AppDbContext() // Конструктор класса AppDbContext
+        public AppDbContext(DbContextOptions<AppDbContext> options) : base(options) // Конструктор класса AppDbContext
         {
             Database.EnsureCreated(); // С помощью этого метода будет создоваться БД при обращении.
         }
 
-        public DbSet<TaskEntity> Tasks { get; set; }
+        public DbSet<TaskEntity> Tasks { get; set; } //
 
     }   
 }
