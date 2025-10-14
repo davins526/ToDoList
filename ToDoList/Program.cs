@@ -9,7 +9,7 @@ builder.Services.AddControllersWithViews();
 
 builder.Services.AddDbContext<AppDbContext>(options =>
 {
-    options.UseSqlServer();
+    options.UseSqlServer(connectionString);
 });
 
 var app = builder.Build();
@@ -29,6 +29,6 @@ app.UseAuthorization();
 
 app.MapControllerRoute(
     name: "default",
-    pattern: "{controller=Home}/{action=Index}/{id?}");
+    pattern: "{controller=Task}/{action=Index}/{id?}");
 
 app.Run();
