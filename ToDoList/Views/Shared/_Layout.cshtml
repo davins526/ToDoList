@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"] - ToDoList</title>
+    <title>@ViewData["Title"] ToDoList</title>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/ToDoList.styles.css" asp-append-version="true" />
@@ -22,14 +22,30 @@
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
                         </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
-                        </li>
                     </ul>
                 </div>
             </div>
         </nav>
     </header>
+
+    <div class="container">
+        <div class="row">
+            <div class="col-md-4 order-md-2 mb-4">
+               <h4 class="d-flex justify-content-between align-content-center mb-3">
+                    <span class="text-muted">Выполненные задачи</span>
+                    <span class="badge badge-secondary badge-pill text-muted" id ="countOfCompletedTask"> </span>
+               </h4>
+            </div>
+        </div>
+    </div>
+
+
+
+
+
+
+
+
     <div class="container">
         <main role="main" class="pb-3">
             @RenderBody()
