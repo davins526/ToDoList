@@ -8,7 +8,9 @@
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/ToDoList.styles.css" asp-append-version="true" />
 </head>
-<body>
+
+<body class="bg-light">
+
     <header>
         <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
             <div class="container-fluid">
@@ -46,18 +48,12 @@
                    <label> Заметки для себя</label>
                    <textarea class="form-control" rows="3"></textarea>
                </div>
+            </div>
                <div class="col-md-8 order-md-1">
                    @RenderBody()
                </div>
-            </div>
         </div>
     </div>
-
-
-
-
-
-
 
 
     <div class="container">
@@ -75,5 +71,6 @@
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
     @await RenderSectionAsync("Scripts", required: false)
+
 </body>
 </html>
