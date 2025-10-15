@@ -1,3 +1,19 @@
-﻿@{
+﻿@using ToDoList.Domain.Enum;
+@{
     ViewData["Title"] = "Home Page";
 }
+
+<h4 class="mb-3 text-muted"> Создание задачи</h4>
+<form id="createTaskForm">
+    <div class="mb-3">
+        <label class="form-label">Название задачки</label>
+        <input name="name" type="text" class="form-control" />
+    </div>
+    <select name="priority" class="form-select mb-3" asp-items="Html.GetEnumSelectList<Priority>()"></select>
+
+    <div class="mb-3">
+        <label class="form-label">Описание задачи</label>
+        <textarea name="description" type="text" class="form-control" rows="3"></textarea>
+    </div>
+    <button id="createTask" class="btn-primary">Создать</button>
+</form>
