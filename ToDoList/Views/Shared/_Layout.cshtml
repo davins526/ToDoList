@@ -38,10 +38,17 @@
                <ul class="list-group mb-3" id="completedListTask"></ul>
                <form>
                    <div class="card col-md-12">
-                       <button type="submit" class="btn btn-secondary">Закончить дело</button>
+                       <button type="submit" class="btn btn-secondary">Закончить день</button>
                    </div>
                </form>
-
+               <br />
+               <div class="form-group">
+                   <label> Заметки для себя</label>
+                   <textarea class="form-control" rows="3"></textarea>
+               </div>
+               <div class="col-md-8 order-md-1">
+                   @RenderBody()
+               </div>
             </div>
         </div>
     </div>
