@@ -3,6 +3,7 @@ using ToDoList.DAL;
 
 var builder = WebApplication.CreateBuilder(args);
 
+
 var connectionString = builder.Configuration.GetConnectionString(name: "MSSQL"); //Строка подклчючения к БД
 
 builder.Services.AddControllersWithViews();
