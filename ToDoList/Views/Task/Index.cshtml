@@ -9,6 +9,7 @@
         <label class="form-label">Название задачки</label>
         <input name="name" type="text" class="form-control" />
     </div>
+    <label class="form-label">Приоритет задачи</label>
     <select name="priority" class="form-select mb-3" asp-items="Html.GetEnumSelectList<Priority>()"></select>
 
     <div class="mb-3">
@@ -16,4 +17,13 @@
         <textarea name="description" type="text" class="form-control" rows="3"></textarea>
     </div>
     <button id="createTask" class="btn-primary">Создать</button>
+
+    <div>
+        
+    </div>
 </form>
+
+@section Scripts
+{
+
+}
