@@ -25,5 +25,14 @@
 
 @section Scripts
 {
-
+    <script>
+        $('#createTask').on('click', function() {
+            e.prevertDefault();
+            $.ajax({
+                type: 'POST',
+                url: '@Url.Action("Index", controller:"Task")',
+                data: $('#createTaskForm').serialize()
+            })
+        });
+    </script>
 }
