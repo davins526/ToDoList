@@ -5,25 +5,38 @@ namespace ToDoList.DAL.Repositories;
 
 public class TaskRepository : IBaseRepository<TaskEntity>
 {
-    public Task Create(TaskEntity entity)
+    private readonly AppDbContext _appDbContext;
+
+    public TaskRepository(AppDbContext appDbContext)
     {
-        throw new NotImplementedException();
+        _appDbContext = appDbContext;
     }
 
-    public Task Delete(TaskEntity entity)
+    public async Task Create(TaskEntity entity)
     {
-        throw new NotImplementedException();
+        await _appDbContext.AddAsync(entity);
+        await _appDbContext.SaveChangesAsync();
+    }
+
+    public async Task Delete(TaskEntity entity)
+    {
+        _appDbContext.Tasks.Remove(entity);
+        await _appDbContext.SaveChangesAsync();
     }
 
     public IQueryable<TaskEntity> GetAll()
     {
-        throw new NotImplementedException();
+        return _appDbContext.Tasks;
     }
 
-    public Task<TaskEntity> Update(TaskEntity entity)
+    public async Task<TaskEntity> Update(TaskEntity entity)
     {
-        throw new NotImplementedException();
+        _appDbContext.Tasks.Update(entity);
+        await _appDbContext.SaveChangesAsync();
+        return entity;
+
     }
+
 }
 
 
