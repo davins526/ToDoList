@@ -11,7 +11,7 @@ namespace ToDoList.DAL
             Database.EnsureCreated(); // С помощью этого метода будет создоваться БД при обращении.
         }
 
-        public DbSet<TaskEntity> Tasks { get; set; } //
+        public DbSet<TaskEntity> Tasks { get; set; } 
 
     }   
 }
