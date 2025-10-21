@@ -64,7 +64,6 @@ public class TaskService : ITaskService
             _logger.LogError(ex, $"Ошибка при создании задачи - {model.Name}");
             return new BaseResponse<TaskEntity>()
             {
-                Description = $"Ошибка: {ex.Message}",
                 StatusCode = StatusCode.IntrenalServerEror
             };
         }

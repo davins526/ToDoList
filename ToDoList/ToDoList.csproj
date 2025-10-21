@@ -9,12 +9,19 @@
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.Mvc.Razor.RuntimeCompilation" Version="8.0.20" />
     <PackageReference Include="Microsoft.AspNetCore.Razor.Runtime" Version="2.3.0" />
+	   <ProjectReference Include="..\PathToServiceProject\ServiceProject.csproj" />
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="9.0.10" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="9.0.10" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\ToDoList.DAL\ToDoList.DAL.csproj" />
+    <ProjectReference Include="..\ToDoList.Domain\ToDoList.Domain.csproj" />
+	  <ProjectReference Include="..\ToDoList.Service\ToDoList.Service.csproj" />
   </ItemGroup>
+	
+	<ItemGroup>
+		
+	</ItemGroup>
 
 </Project>
