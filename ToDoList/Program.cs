@@ -3,12 +3,14 @@ using ToDoList.DAL;
 using ToDoList.DAL.Interfaces;
 using ToDoList.DAL.Repositories;
 using ToDoList.Domain.Entity;
+using ToDoList.Service.Implementations;
+using ToDoList.Service.Interfaces;
 
 
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddScoped<IBaseRepository<TaskEntity>, TaskRepository>();
-builder.Services.AddScoped<ITaskService, TaskService>();
+builder.Services.AddScoped<ITaskService, TaskService > ();
 
 
 
