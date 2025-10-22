@@ -1,4 +1,5 @@
 ﻿@using ToDoList.Domain.Enum;
+
 @{
     ViewData["Title"] = "Home Page";
 }
@@ -27,25 +28,32 @@
 {
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script>
-        $('#createTask').on('click', function() {
-            e.prevertDefault();
+        $('#createTask').on('click', function(e) { // Добавили параметр e
+            e.preventDefault(); // Исправили опечатку
+
             $.ajax({
                 type: 'POST',
-                url: '@Url.Action("Index", controller:"Task")',
-                data: $('#createTaskForm').serialize()
-                success: function(response){
+                url: '@Url.Action("Create", controller:"Task")', // Обычно для создания используется метод Create
+                data: $('#createTaskForm').serialize(),
+                success: function(response) {
                     Swal.fire({
-                        title: 'Информация',
-                        text: response.responseJson.description,
+                        title: "Задача создана!",
+                        text: response.description,
+                        icon: "success",
+                        confirmButtonText:'OK'
+                    });
+                    // Очищаем форму после успешного создания
+                    $('#createTaskForm')[0].reset();
+                },
+                error: function(response) {
+                    Swal.fire({
+                        title: 'Информация!',
+                        text: response.responseJSON.description,
                         icon: 'error',
                         confirmButtonText: 'Окей'
-                    })
-
-                },
-                error: function (response){
-
+                    });
                 }
-            })
+            });
         });
-    </script> 
+    </script>
 }

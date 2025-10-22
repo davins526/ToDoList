@@ -8,7 +8,6 @@ namespace ToDoList.DAL
     {
         public AppDbContext(DbContextOptions<AppDbContext> options) : base(options) // Конструктор класса AppDbContext
         {
-            Database.EnsureDeleted();
             Database.EnsureCreated(); // С помощью этого метода будет создоваться БД при обращении.
         }
 

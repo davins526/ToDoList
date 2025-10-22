@@ -22,7 +22,6 @@ namespace ToDoList.Controllers
         }
 
         [HttpPost]
-
         public async Task<IActionResult>  Create(CreateTaskViewModel model)
 
         {
