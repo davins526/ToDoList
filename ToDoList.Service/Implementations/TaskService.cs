@@ -7,7 +7,6 @@ using ToDoList.Service.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using ToDoList.Domain.Enum;
 
-
 namespace ToDoList.Service.Implementations;
 
 public class TaskService : ITaskService
@@ -25,6 +24,8 @@ public class TaskService : ITaskService
     {
         try
         {
+            model.Validate();
+
             _logger.LogInformation(message: $"Запрос  на создании задачи - {model.Name}");
 
             var task = await _taskRepository.GetAll()
@@ -64,10 +65,14 @@ public class TaskService : ITaskService
             _logger.LogError(ex, $"Ошибка при создании задачи - {model.Name}");
             return new BaseResponse<TaskEntity>()
             {
+                Description = ex.Message,
                 StatusCode = StatusCode.IntrenalServerEror
             };
         }
 
     }
+
+
+
 }
         
