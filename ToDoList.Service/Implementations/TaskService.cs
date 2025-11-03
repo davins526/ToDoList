@@ -6,6 +6,8 @@ using ToDoList.Domain.ViewModels.Task;
 using ToDoList.Service.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using ToDoList.Domain.Enum;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
+using System.Linq;
 
 namespace ToDoList.Service.Implementations;
 
@@ -72,7 +74,38 @@ public class TaskService : ITaskService
 
     }
 
+    public async Task<IBaseResponse<IEnumerable<TaskViewModel>>> GetTasks()
+    {
+        try
+        {
+            var task:IQueryable < TaskEntity > = _taskRepository.GetAll()
+                .Select(x => new TaskViewModel()
+                {
+                    Id = x.Id,
+                    Name = x.Name,
+                    Description = x.Description,
+                    IsDone = x.IsDone == true ? "Готова" : "Не готова",
+                    Priority = x.Priority.
+                });
+
+            return new BaseResponse<IEnumerable<TaskViewModel>>()
+            {
+                Data = task,
+                StatusCode = StatusCode.OK
+            };
 
 
+        }
+
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, message: $"[TaskService.GetTasks]: {ex.Message}");
+            return new BaseResponse<IEnumerable<TaskViewModel>>()
+            {
+                Description = ex.Message,
+                StatusCode = StatusCode.IntrenalServerEror
+            };
+        }
+    }
 }
         

@@ -39,5 +39,11 @@ namespace ToDoList.Controllers
 
         }
 
+        public async Task<IActionResult> TaskHandler()
+        {
+            return Json(data: new { });
+        }
+
+
     }
 }
