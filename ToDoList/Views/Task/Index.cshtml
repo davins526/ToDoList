@@ -55,6 +55,28 @@
                 url: "@Url.Action("TaskHandler")",
                 method: 'POST',
                 data: null
+            },
+            columns: [
+                {data: 'name'},
+                {data: 'priority'},
+                {data: 'description'},
+                {data: 'isDone'},
+                {
+                    data: null,
+                    orderable: false,
+                    render: function (data, type){
+                        return '<button class="btn btn-success btn-sm text-light">Выполнить</button>'
+                    }
+                }
+
+            ],
+            createdRow: function (nRow, data){
+                for (var i = 0; i < dataTable.columns().header().length - 1; i++){
+                    $('td', nRow).eq(i).css('cursor','pointer');
+
+                    $('td', nRow).eq(i).on('click', null);
+                }
+                $('td button', nRow).eq(i).on('click', null);
             }
 
 
