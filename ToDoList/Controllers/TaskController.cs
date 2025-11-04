@@ -1,4 +1,3 @@
-using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
 using ToDoList.Domain.Filter.Task;
 using ToDoList.Domain.ViewModels.Task;
@@ -36,9 +35,24 @@ namespace ToDoList.Controllers
 
             }
 
-            return BadRequest(error:new { responce.Description });
+            return BadRequest(new { responce.Description });
 
         }
+
+        public async Task<IActionResult> EndTask(long id)
+        {
+            var responce = await _taskService.EndTask(id);
+
+            if (responce.StatusCode == Domain.Enum.StatusCode.OK)
+            {
+                return Ok(new { description = responce.Description });
+            }
+            return BadRequest(new { responce.Description });
+        }
+
+
+
+
 
         [HttpPost]
         public async Task<IActionResult> TaskHandler(TaskFilter filter)

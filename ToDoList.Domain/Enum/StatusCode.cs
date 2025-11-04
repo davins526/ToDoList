@@ -4,7 +4,9 @@
     {
         TaskIsHasAlready = 1,
 
-        OK = 200,
+        TaskNotFound = 2,
+
+        OK = 200, 
 
         IntrenalServerEror = 500,
 

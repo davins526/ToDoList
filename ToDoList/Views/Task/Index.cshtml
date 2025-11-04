@@ -1,30 +1,31 @@
-﻿@using ToDoList.Domain.Enum;
+﻿@using ToDoList.Domain.Enum
 
 @{
-    ViewData["Title"] = "Home Page";
+    ViewData["Title"] = "";
 }
 
-<h4 class="mb-3 text-muted"> Создание задачи</h4>
+<h4 class="mb-3 text-muted">Создание задачи</h4>
+
 <form id="createTaskForm">
     <div class="mb-3">
         <label class="form-label">Название задачки</label>
         <input name="name" type="text" class="form-control" />
     </div>
-    <label class="form-label">Приоритет задачи</label>
-    <select name="priority" class="form-select mb-3" asp-items="Html.GetEnumSelectList<Priority>()"></select>
+
+    <div class="mb-3">
+        <label class="form-label">Приоритет задачи</label>
+        <select name="priority" class="form-select" asp-items="Html.GetEnumSelectList<Priority>()"></select>
+    </div>
 
     <div class="mb-3">
         <label class="form-label">Описание задачи</label>
-        <textarea name="description" type="text" class="form-control" rows="3"></textarea>
+        <textarea name="description" class="form-control" rows="3"></textarea>
     </div>
-    <button id="createTask" class="btn-primary">Создать</button>
 
-    <div>
-        
-    </div>
+    <button id="createTask" class="btn btn-primary">Создать</button>
 </form>
 
-<br>
+<br />
 
 <div class="row">
     <div class="form-group col-md-6">
@@ -33,12 +34,13 @@
     </div>
     <div class="form-group col-md-6">
         <label class="col-form-label">Приоритет</label>
-        <select class="form-control md-3" id="prioritySearch" asp-items="Html.GetEnumSelectList<Priority>()"></select>
+        <select id="prioritySearch" class="form-control" asp-items="Html.GetEnumSelectList<Priority>()"></select>
     </div>
 </div>
 
-<br/>
-<table class = "table table-dark  table-hover" id="taskTableId">
+<br />
+
+<table class="table table-dark table-hover" id="taskTableId">
     <thead>
         <tr>
             <th>Название</th>
@@ -48,16 +50,27 @@
             <th>Действие</th>
         </tr>
     </thead>
-    <tbody>
-
-    </tbody>
+    <tbody></tbody>
 </table>
 
-@section Scripts
-{
+@section Scripts {
     <script type="text/javascript" src="//cdn.datatables.net/2.3.4/js/dataTables.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
     <script>
+        const swalWithBootstrapButtons = Swal.mixin({
+            customClass: {
+                confirmButton: "btn btn-success"
+            },
+            buttonsStyling: false
+        });
+
+        function model() {
+            return {
+                name: $('input[name="nameTask"]').val(),
+                priority: $('#prioritySearch').val()
+            };
+        }
 
         let dataTable = $('#taskTableId').DataTable({
             info: true,
@@ -71,69 +84,118 @@
                 data: model
             },
             columns: [
-                {data: 'name'},
-                {data: 'priority'},
-                {data: 'description'},
-                {data: 'isDone'},
+                { data: 'name' },
+                { data: 'priority' },
+                { data: 'description' },
+                { data: 'isDone' },
                 {
                     data: null,
                     orderable: false,
-                    render: function (data, type){
-                        return '<button class="btn btn-success btn-sm text-light">Выполнить</button>'
+                    render: function (data, type) {
+                        return '<button class="btn btn-success btn-sm text-light">Выполнить</button>';
                     }
                 }
-
             ],
-            createdRow: function (nRow, data){
-                for (var i = 0; i < dataTable.columns().header().length - 1; i++){
-                    $('td', nRow).eq(i).css('cursor','pointer');
+            createdRow: function (nRow, aData, iDataIndex) {
 
-                    $('td', nRow).eq(i).on('click', null);
-                }
-                $('td button', nRow).eq(i).on('click', null);
-            }
-
-
-        });
-
-        function model(){
-            return{
-                name: $('input[name = "nameTask"]').val(),
-                Priority: $('#prioritySearch option:selected').val()
-
-            }
-        }
-
-        $('prioritySearch').on('change', function () {
-            dataTable.draw();
-        })
-
-        $('#createTask').on('click', function(e) { // Добавили параметр e
-            e.preventDefault(); // Исправили опечатку
-
+                var handlerComplete = function(){
+                            swalWithBootstrapButtons.fire({
+            title: "Вы уверены?",
+            icon: "warning",
+            confirmButtonText: "Да",
+            reverseButtons: true
+        }).then((result) => {
+          if (result.isConfirmed) {
             $.ajax({
                 type: 'POST',
-                url: '@Url.Action("Create", controller:"Task")', // Обычно для создания используется метод Create
-                data: $('#createTaskForm').serialize(),
-                success: function(response) {
+                url: '@Url.Action("EndTask", "Task")',
+                data: {id: aData.id},
+                success: function (response) {
                     Swal.fire({
                         title: "Задача создана!",
                         text: response.description,
                         icon: "success",
-                        confirmButtonText:'OK'
+                        confirmButtonText: 'Окей'
                     });
-                    // Очищаем форму после успешного создания
-                    $('#createTaskForm')[0].reset();
+                    dataTable.ajax.reload();
+
                 },
-                error: function(response) {
+                error: function (response) {
                     Swal.fire({
                         title: 'Информация!',
-                        text: response.responseJSON.description,
+                        text: response.responseJSON?.description ?? "Ошибка при создании задачи",
+                        icon: 'error',
+                        confirmButtonText: 'Окей'
+                    });
+                }
+            })
+          } 
+          
+        });
+                }
+
+                for (var i = 0; i < dataTable.columns().header().length - 1; i++) {
+                    $('td', nRow).eq(i).css('cursor', 'pointer');
+                }
+
+                $('td button', nRow).on('click', handlerComplete);
+            }
+        });
+
+        $('#prioritySearch').on('change', function () {
+            dataTable.ajax.reload();
+        });
+
+        $('#createTask').on('click', function (e) {
+            e.preventDefault();
+
+            $.ajax({
+                type: 'POST',
+                url: '@Url.Action("Create", "Task")',
+                data: $('#createTaskForm').serialize(),
+                success: function (response) {
+                    Swal.fire({
+                        title: "Задача создана!",
+                        text: response.description,
+                        icon: "success",
+                        confirmButtonText: 'OK'
+                    });
+                    $('#createTaskForm')[0].reset();
+                    dataTable.ajax.reload();
+                },
+                error: function (response) {
+                    Swal.fire({
+                        title: 'Информация!',
+                        text: response.responseJSON?.description ?? "Ошибка при создании задачи",
                         icon: 'error',
                         confirmButtonText: 'Окей'
                     });
                 }
             });
         });
+
+        function handlerComplete(e) {
+            const rowData = dataTable.row($(this).closest('tr')).data();
+            Swal.fire({
+                title: 'Выполнить задачу?',
+                text: rowData.name,
+                icon: 'question',
+                showCancelButton: true,
+                confirmButtonText: 'Да',
+                cancelButtonText: 'Отмена'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    $.ajax({
+                        type: 'POST',
+                        url: '@Url.Action("Complete", "Task")',
+                        data: { id: rowData.id },
+                        success: function () {
+                            Swal.fire('Готово!', 'Задача выполнена.', 'success');
+                            dataTable.ajax.reload();
+                        }
+                    });
+                }
+            });
+        }
     </script>
 }
