@@ -10,6 +10,7 @@ using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 using System.Linq;
 using ToDoList.Domain.Extenstions;
 using System.Collections.Generic;
+using ToDoList.Domain.Filter.Task;
 
 namespace ToDoList.Service.Implementations;
 
@@ -76,11 +77,16 @@ public class TaskService : ITaskService
 
     }
 
-    public async Task<IBaseResponse<IEnumerable<TaskViewModel>>> GetTasks()
+    public async Task<IBaseResponse<IEnumerable<TaskViewModel>>> GetTasks(TaskFilter filter)
     {
         try
         {
             var tasks = await _taskRepository.GetAll()
+                .WhereIf(!string.IsNullOrWhiteSpace(filter.Name),
+                    predicate: x => x.Name == filter.Name)
+
+                 .WhereIf(filter.Priority.HasValue,
+                    predicate: x => x.Priority == filter.Priority)
                 .Select(x => new TaskViewModel()
                 {
                     Id = x.Id,

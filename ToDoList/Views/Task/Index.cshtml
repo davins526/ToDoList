@@ -24,6 +24,20 @@
     </div>
 </form>
 
+<br>
+
+<div class="row">
+    <div class="form-group col-md-6">
+        <label class="col-form-label">Название</label>
+        <input type="text" name="nameTask" class="form-control" />
+    </div>
+    <div class="form-group col-md-6">
+        <label class="col-form-label">Приоритет</label>
+        <select class="form-control md-3" id="prioritySearch" asp-items="Html.GetEnumSelectList<Priority>()"></select>
+    </div>
+</div>
+
+<br/>
 <table class = "table table-dark  table-hover" id="taskTableId">
     <thead>
         <tr>
@@ -54,7 +68,7 @@
             ajax: {
                 url: "@Url.Action("TaskHandler")",
                 method: 'POST',
-                data: null
+                data: model
             },
             columns: [
                 {data: 'name'},
@@ -82,6 +96,13 @@
 
         });
 
+        function model(){
+            return{
+                name: $('input[name = "nameTask"]').val(),
+                Priority: $('#prioritySearch option:selected').val()
+
+            }
+        }
 
         $('#createTask').on('click', function(e) { // Добавили параметр e
             e.preventDefault(); // Исправили опечатку

@@ -40,9 +40,10 @@ namespace ToDoList.Controllers
 
         }
 
+        [HttpPost]
         public async Task<IActionResult> TaskHandler(TaskFilter filter)
         {
-            var response = await _taskService.GetTasks();
+            var response = await _taskService.GetTasks(filter);
             return Json(new { data = response.Data});
         }
 
