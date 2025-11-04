@@ -8,6 +8,8 @@ using Microsoft.EntityFrameworkCore;
 using ToDoList.Domain.Enum;
 using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 using System.Linq;
+using ToDoList.Domain.Extenstions;
+using System.Collections.Generic;
 
 namespace ToDoList.Service.Implementations;
 
@@ -78,28 +80,27 @@ public class TaskService : ITaskService
     {
         try
         {
-            var task:IQueryable < TaskEntity > = _taskRepository.GetAll()
+            var tasks = await _taskRepository.GetAll()
                 .Select(x => new TaskViewModel()
                 {
                     Id = x.Id,
                     Name = x.Name,
                     Description = x.Description,
-                    IsDone = x.IsDone == true ? "Готова" : "Не готова",
-                    Priority = x.Priority.
-                });
+                    IsDone = x.IsDone ? "Готова" : "Не готова",
+                    Priority = x.Priority.GetDisplayName(),
+                    Created = x.Created.ToLongDateString()
+                })
+                .ToListAsync();
 
             return new BaseResponse<IEnumerable<TaskViewModel>>()
             {
-                Data = task,
+                Data = tasks,
                 StatusCode = StatusCode.OK
             };
-
-
         }
-
         catch (Exception ex)
         {
-            _logger.LogError(ex, message: $"[TaskService.GetTasks]: {ex.Message}");
+            _logger.LogError(ex, $"[TaskService.GetTasks]: {ex.Message}");
             return new BaseResponse<IEnumerable<TaskViewModel>>()
             {
                 Description = ex.Message,
@@ -108,4 +109,4 @@ public class TaskService : ITaskService
         }
     }
 }
-        
+

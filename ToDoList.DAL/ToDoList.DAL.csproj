@@ -14,4 +14,4 @@
     <ProjectReference Include="..\ToDoList.Domain\ToDoList.Domain.csproj" />
   </ItemGroup>
 
-</Project>
+</Project> 

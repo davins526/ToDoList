@@ -41,6 +41,7 @@ namespace ToDoList.Controllers
 
         public async Task<IActionResult> TaskHandler()
         {
+            var response = await _taskService.GetTasks();
             return Json(data: new { });
         }
 
