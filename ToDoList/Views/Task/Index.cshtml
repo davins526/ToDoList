@@ -104,6 +104,10 @@
             }
         }
 
+        $('prioritySearch').on('change', function () {
+            dataTable.draw();
+        })
+
         $('#createTask').on('click', function(e) { // Добавили параметр e
             e.preventDefault(); // Исправили опечатку
 
